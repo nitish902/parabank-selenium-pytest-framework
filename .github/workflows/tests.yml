@@ -15,18 +15,30 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
+
     - name: Setup Python
       uses: actions/setup-python@v5
       with:
         python-version: '3.11'
 
+
     - name: Install dependencies
       run: |
+        python -m pip install --upgrade pip
         pip install -r requirements.txt
+
 
     - name: Install Chrome
       uses: browser-actions/setup-chrome@v1
 
-    - name: Run tests
+
+    - name: Run Selenium Tests
       run: |
-        pytest -v
+        pytest -v --html=report.html --self-contained-html
+
+
+    - name: Upload Test Report
+      uses: actions/upload-artifact@v4
+      with:
+        name: Selenium-Test-Report
+        path: report.html
